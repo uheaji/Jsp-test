@@ -27,13 +27,34 @@
 							<button onClick="deleteById(${user.id})" class="btn btn-danger">삭제</button>
 					    	</c:if>
 					</td>
-
-					
 				</tr>
 			</tbody>
 		</c:forEach>
 	</table>
 </div>
+
+<script>
+		function deleteById(userId){
+			// 요청과 응답	을 json
+			var data = {
+					userId: userId
+			}
+			$.ajax({
+				type: "post",
+				url: "/test/user?cmd=delete",
+				data: JSON.stringify(data),
+				contentType: "application/json; charset=utf-8",
+				dataType: "json"
+			}).done(function(result){
+				console.log(result);
+				if(result.status == "ok"){
+					location.href="index.jsp";
+				}else{
+					alert("삭제에 실패하였습니다.");
+				}
+			});
+		}
+	</script>
 
 </body>
 </html>

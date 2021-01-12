@@ -33,5 +33,8 @@ public class UserService {
 		return UserDao.findAll();
 	}
 
+	public int 회원삭제(int id) {
+		return userDao.deleteById(id);
+	}
 
 }

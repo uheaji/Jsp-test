@@ -15,10 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.cos.test.domain.user.User;
+import com.cos.test.domain.user.dto.DeleteReqDto;
+import com.cos.test.domain.user.dto.DeleteRespDto;
 import com.cos.test.domain.user.dto.JoinReqDto;
 import com.cos.test.domain.user.dto.LoginReqDto;
 import com.cos.test.service.UserService;
 import com.cos.test.util.Script;
+import com.google.gson.Gson;
 
 
 @WebServlet("/user")
@@ -99,9 +102,33 @@ public class UserController extends HttpServlet {
 			request.setAttribute("users", users);
 			RequestDispatcher dis = request.getRequestDispatcher("user/userList.jsp");
 			dis.forward(request, response);
-		}
+		}else if(cmd.equals("delete")) {
+			
+			// 1. 요청 받은 json 데이터를 자바 오브젝트로 파싱
+			BufferedReader br = request.getReader();
+			String data = br.readLine(); // DTO 만들어야한다.
+			
+			Gson gson = new Gson();
+			DeleteReqDto dto = gson.fromJson(data, DeleteReqDto.class);
 
+			// 2. DB에서 id값으로 글 삭제
+			int result = userService.회원삭제(dto.getUserId());
+			
+			// 3. 응답할 json 데이터를 생성
+			DeleteRespDto respDto = new DeleteRespDto();
+			if(result == 1) {
+				respDto.setStatus("ok");
+			}else {
+				respDto.setStatus("fail");
+			}
+			String respData = gson.toJson(respDto);
+			System.out.println("respData : "+respData);
+			PrintWriter out = response.getWriter();
+			out.print(respData);
+			out.flush();
+		}
 	}
-	}
+
+}
 
 

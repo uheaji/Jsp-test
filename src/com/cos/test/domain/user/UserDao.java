@@ -12,6 +12,23 @@ import com.cos.test.domain.user.dto.LoginReqDto;
 
 public class UserDao {
 	
+	public int deleteById(int id) { // 회원정보삭제
+		String sql = "DELETE FROM user WHERE id = ?";
+		Connection conn = DB.getConnection();
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			int result = pstmt.executeUpdate();
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally { // 무조건 실행
+			DB.close(conn, pstmt);
+		}
+		return -1;
+	}
+	
 	public static List<User> findAll(){
 		String sql = "SELECT * FROM  user ORDER BY id ASC";
 		Connection conn = DB.getConnection();
@@ -28,6 +45,7 @@ public class UserDao {
 						.username(rs.getString("username"))
 						.password(rs.getString("password"))
 						.email(rs.getString("email"))
+						.userRole(rs.getString("userRole"))
 						.build();
 				users.add(user);	
 			}
