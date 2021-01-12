@@ -1,5 +1,7 @@
 package com.cos.test.service;
 
+import java.util.List;
+
 import com.cos.test.domain.user.User;
 import com.cos.test.domain.user.dto.LoginReqDto;
 import com.cos.test.domain.user.UserDao;
@@ -26,5 +28,10 @@ public class UserService {
 	public User 로그인(LoginReqDto dto) {
 		return userDao.findByUsernameAndPassword(dto);
 	}
+	
+	public List<User> 회원목록보기(){
+		return UserDao.findAll();
+	}
+
 
 }

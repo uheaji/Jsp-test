@@ -3,12 +3,45 @@ package com.cos.test.domain.user;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.cos.test.config.DB;
 import com.cos.test.domain.user.dto.JoinReqDto;
 import com.cos.test.domain.user.dto.LoginReqDto;
 
 public class UserDao {
+	
+	public static List<User> findAll(){
+		String sql = "SELECT * FROM  user ORDER BY id ASC";
+		Connection conn = DB.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs  = null;
+		List<User> users = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs =  pstmt.executeQuery();
+			
+			while(rs.next()) { // 커서를 이동하는 함수
+				User user = User.builder() 
+						.id(rs.getInt("id"))
+						.username(rs.getString("username"))
+						.password(rs.getString("password"))
+						.email(rs.getString("email"))
+						.build();
+				users.add(user);	
+			}
+            // while문 안에서 return하면 한 행 밖에 못 읽는다.
+			return users;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally { // 무조건 실행
+			DB.close(conn, pstmt, rs);
+		}
+		
+		return null;
+	}
+
 	
 	public User findByUsernameAndPassword(LoginReqDto dto) { // 로그인
 		String sql = "SELECT id, username, email FROM user WHERE username = ? AND password = ?";

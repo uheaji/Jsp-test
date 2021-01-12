@@ -11,18 +11,21 @@
       <tr>
         <th>번호</th>
         <th>유저네임</th>
-        <th>패스워드</th>
         <th>이메일</th>
+        <th></th>
       </tr>
     </thead>
+    
+    <c:forEach var="user" items="${users}">
     <tbody>
       <tr>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>${user.id}</td>
+        <td>${user.username}</td>
+        <td>${user.email}</td>
         <td></td>
       </tr>
     </tbody>
+    </c:forEach>
   </table>
 </div>
 

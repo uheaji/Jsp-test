@@ -3,7 +3,10 @@ package com.cos.test.web;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -91,8 +94,14 @@ public class UserController extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.invalidate();
 			response.sendRedirect("index.jsp");
+		}else if (cmd.equals("userList")) { // 글목록보기
+			List<User> users = userService.회원목록보기();
+			request.setAttribute("users", users);
+			RequestDispatcher dis = request.getRequestDispatcher("user/userList.jsp");
+			dis.forward(request, response);
 		}
+
+	}
 	}
 
-}
 
