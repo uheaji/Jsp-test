@@ -103,18 +103,14 @@ public class UserController extends HttpServlet {
 			RequestDispatcher dis = request.getRequestDispatcher("user/userList.jsp");
 			dis.forward(request, response);
 		}else if(cmd.equals("delete")) {
-			
-			// 1. 요청 받은 json 데이터를 자바 오브젝트로 파싱
 			BufferedReader br = request.getReader();
-			String data = br.readLine(); // DTO 만들어야한다.
+			String data = br.readLine(); 
 			
 			Gson gson = new Gson();
 			DeleteReqDto dto = gson.fromJson(data, DeleteReqDto.class);
 
-			// 2. DB에서 id값으로 글 삭제
 			int result = userService.회원삭제(dto.getUserId());
 			
-			// 3. 응답할 json 데이터를 생성
 			DeleteRespDto respDto = new DeleteRespDto();
 			if(result == 1) {
 				respDto.setStatus("ok");
@@ -126,6 +122,7 @@ public class UserController extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			out.print(respData);
 			out.flush();
+
 		}
 	}
 

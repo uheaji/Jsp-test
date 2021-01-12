@@ -62,7 +62,7 @@ public class UserDao {
 
 	
 	public User findByUsernameAndPassword(LoginReqDto dto) { // 로그인
-		String sql = "SELECT id, username, email FROM user WHERE username = ? AND password = ?";
+		String sql = "SELECT id, username, email, userRole FROM user WHERE username = ? AND password = ?";
 		Connection conn = DB.getConnection();
 		PreparedStatement pstmt = null; 
 		ResultSet rs  = null;
@@ -79,6 +79,7 @@ public class UserDao {
 						.id(rs.getInt("id"))
 						.username(rs.getString("username"))
 						.email(rs.getString("email"))
+						.userRole(rs.getString("userRole"))
 						.build();
 				return user;
 			}

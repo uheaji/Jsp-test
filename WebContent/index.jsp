@@ -3,7 +3,6 @@
 
 <%@ include file="../layout/header.jsp"%>
 
-
 <h1>홈화면입니다.</h1>
 </body>
 </html>

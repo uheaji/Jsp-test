@@ -22,11 +22,17 @@
 					<td>${user.id}</td>
 					<td>${user.username}</td>
 					<td>${user.email}</td>
-					<td>
-					        <c:if test="${sessionScope.principal.id == user.id}">
-							<button onClick="deleteById(${user.id})" class="btn btn-danger">삭제</button>
-					    	</c:if>
-					</td>
+					<td><c:choose>
+							<c:when test="${sessionScope.principal.userRole eq 'ADMIN'}">
+								<button onclick="deleteById(${user.id})" class="btn btn-danger">삭제</button>
+							</c:when>
+							
+							<c:when test="${sessionScope.principal.id == user.id}">
+								<button onClick="deleteById(${user.id})" class="btn btn-danger">삭제</button>
+							</c:when>
+							<c:otherwise>
+							</c:otherwise>
+					</c:choose></td>
 				</tr>
 			</tbody>
 		</c:forEach>
